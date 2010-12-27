@@ -18,6 +18,11 @@ class RailsTest < Test::Unit::TestCase
       url = foo_path(params)
       render :text => params.merge(:url => url).inspect
     end
+
+    def profile
+      url = profile_url(:host => "#{request.subdomain}.example.org")
+      render :text => params.merge(:url => url).inspect
+    end
   end
 
   def params
@@ -88,5 +93,10 @@ class RailsTest < Test::Unit::TestCase
     assert_nil params[:page]
     assert_equal uuid, params[:uuid]
     assert_equal "/en/#{uuid}/foo/1.html", params[:url]
+  end
+
+  test "get to / with subdomain" do
+    get 'http://clemens.example.org'
+    assert_equal "http://clemens.example.org/en.html", params[:url]
   end
 end
